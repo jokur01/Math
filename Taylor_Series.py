@@ -3,26 +3,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
-x = sp.Symbol('x')
-y = sp.cos(x)
-max_factor = 20
-a = 3
+x = sp.Symbol('x') # zmienna, po ktorej liczona jest pochodna
+y = sp.cos(x) # funkcja
+max_factor = 20 # maksymalny wspolczynnik - 1 ktory zostanie obliczony
+a = 3 # punkt wokol ktorego odbywa sie aproksymacja
 
 derivatives = []
 derivative_values = []
 coeffs = []
 
 derivatives.append(y.diff(x))
-for i in range(1, max_factor-1):
+for i in range(1, max_factor-1): # obliczenie pochodnych
     derivatives.append(derivatives[i-1].diff(x))
 
-for i in range(max_factor-1):
+for i in range(max_factor-1): # obliczenie wartosci dla pochodnych w punkcie a
     f = sp.lambdify(x, derivatives[i], 'numpy')
     derivative_values.append(f(a))
 
 #Tu zmienic funkcję (zamiast x -> a) z reguły na obliczenie współczynników
 coeffs.append(sp.cos(a))
-for i in range(1, max_factor-1):
+for i in range(1, max_factor-1): # obliczenie wspolczynnikow
     coeffs.append(derivative_values[i-1]/sp.factorial(i))
 
 print("Pochodne:")
